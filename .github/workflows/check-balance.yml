@@ -21,6 +21,18 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Debug Environment Variables
+        env:
+          BTC_ADDRESS: ${{ secrets.BTC_ADDRESS }}
+          EMAIL_SENDER: ${{ secrets.EMAIL_SENDER }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+          EMAIL_RECIPIENT: ${{ secrets.EMAIL_RECIPIENT }}
+        run: |
+          echo "BTC_ADDRESS is ${BTC_ADDRESS:-unset}"
+          echo "EMAIL_SENDER is ${EMAIL_SENDER:-unset}"
+          echo "EMAIL_PASSWORD is ${EMAIL_PASSWORD:-unset}"
+          echo "EMAIL_RECIPIENT is ${EMAIL_RECIPIENT:-unset}"
+
       - name: Run balance check script
         env:
           BTC_ADDRESS: ${{ secrets.BTC_ADDRESS }}
