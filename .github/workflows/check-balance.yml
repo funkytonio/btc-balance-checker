@@ -2,8 +2,8 @@ name: BTC Balance Checker
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # Runs daily at midnight UTC; adjust as needed (e.g., '*/5 * * * *' for every 5 minutes)
-  workflow_dispatch:  # Allows manual trigger from GitHub UI
+    - cron: '0 0 * * *'  # Runs daily at midnight UTC
+  workflow_dispatch:  # Manual trigger
 
 jobs:
   check-balance:
@@ -28,10 +28,10 @@ jobs:
           EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
           EMAIL_RECIPIENT: ${{ secrets.EMAIL_RECIPIENT }}
         run: |
-          echo "BTC_ADDRESS is ${BTC_ADDRESS:-unset}"
-          echo "EMAIL_SENDER is ${EMAIL_SENDER:-unset}"
-          echo "EMAIL_PASSWORD is ${EMAIL_PASSWORD:-unset}"
-          echo "EMAIL_RECIPIENT is ${EMAIL_RECIPIENT:-unset}"
+          echo "BTC_ADDRESS set? ${BTC_ADDRESS:+set (masked)}" || echo "BTC_ADDRESS unset"
+          echo "EMAIL_SENDER set? ${EMAIL_SENDER:+set (masked)}" || echo "EMAIL_SENDER unset"
+          echo "EMAIL_PASSWORD set? ${EMAIL_PASSWORD:+set (masked)}" || echo "EMAIL_PASSWORD unset"
+          echo "EMAIL_RECIPIENT set? ${EMAIL_RECIPIENT:+set (masked)}" || echo "EMAIL_RECIPIENT unset"
 
       - name: Run balance check script
         env:
