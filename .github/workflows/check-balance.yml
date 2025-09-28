@@ -8,6 +8,11 @@ on:
 jobs:
   check-balance:
     runs-on: ubuntu-latest
+    env:
+      BTC_ADDRESS: ${{ secrets.BTC_ADDRESS }}
+      EMAIL_SENDER: ${{ secrets.EMAIL_SENDER }}
+      EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+      EMAIL_RECIPIENT: ${{ secrets.EMAIL_RECIPIENT }}
 
     steps:
       - name: Checkout repository
@@ -22,21 +27,11 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Debug Environment Variables
-        env:
-          BTC_ADDRESS: ${{ secrets.BTC_ADDRESS }}
-          EMAIL_SENDER: ${{ secrets.EMAIL_SENDER }}
-          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
-          EMAIL_RECIPIENT: ${{ secrets.EMAIL_RECIPIENT }}
         run: |
-          echo "BTC_ADDRESS set? ${BTC_ADDRESS:+set (masked)}" || echo "BTC_ADDRESS unset"
-          echo "EMAIL_SENDER set? ${EMAIL_SENDER:+set (masked)}" || echo "EMAIL_SENDER unset"
-          echo "EMAIL_PASSWORD set? ${EMAIL_PASSWORD:+set (masked)}" || echo "EMAIL_PASSWORD unset"
-          echo "EMAIL_RECIPIENT set? ${EMAIL_RECIPIENT:+set (masked)}" || echo "EMAIL_RECIPIENT unset"
+          [ -n "$BTC_ADDRESS" ] && echo "BTC_ADDRESS set? set (masked)" || echo "BTC_ADDRESS unset"
+          [ -n "$EMAIL_SENDER" ] && echo "EMAIL_SENDER set? set (masked)" || echo "EMAIL_SENDER unset"
+          [ -n "$EMAIL_PASSWORD" ] && echo "EMAIL_PASSWORD set? set (masked)" || echo "EMAIL_PASSWORD unset"
+          [ -n "$EMAIL_RECIPIENT" ] && echo "EMAIL_RECIPIENT set? set (masked)" || echo "EMAIL_RECIPIENT unset"
 
       - name: Run balance check script
-        env:
-          BTC_ADDRESS: ${{ secrets.BTC_ADDRESS }}
-          EMAIL_SENDER: ${{ secrets.EMAIL_SENDER }}
-          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
-          EMAIL_RECIPIENT: ${{ secrets.EMAIL_RECIPIENT }}
         run: python main.py
